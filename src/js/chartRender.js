@@ -80,8 +80,8 @@ const ChartRender = function(canvas, chart, dpr, anim, params) {
 				if(x_range.skipFactor >= 1) {
 					let localFactor = index % x_range.skipFactor;
 					if (anim.CR_xrange_skipAlpha_fadeOut && localFactor == x_range.skipFactor / 2) {
-						ctx.measureText(chart.getXlabel(0), 0, 0, params.fntAxesSize).width;
-						text(chart.getXlabel(index), x, y, x_range.skipAlpha);
+						ctx.measureText(chart.getXLabel(0), 0, 0, params.fntAxesSize).width;
+						text(chart.getXLabel(index), x, y, x_range.skipAlpha);
 
 						if(params.debug) {
 							ctx.beginPath();
@@ -94,7 +94,7 @@ const ChartRender = function(canvas, chart, dpr, anim, params) {
 						return;
 					}
 					if (anim.CR_xrange_skipAlpha_fadeIn && (index % (x_range.skipFactor * 2) == x_range.skipFactor)) {
-						text(chart.getXlabel(index), x, y, x_range.skipAlpha);
+						text(chart.getXLabel(index), x, y, x_range.skipAlpha);
 
 						if(params.debug) {
 							ctx.beginPath();

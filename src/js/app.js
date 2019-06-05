@@ -2,36 +2,56 @@
 'use strict';
 window.addEventListener('load', () => {
 	const params = {
-		devicePixelRatio: 1,
-		valueToString: (val, short) => {
-			var date = new Date(val).toDateString();
-			if (short) {
-				return date.slice(4, date.length - 5);	
+			devicePixelRatio: 1,
+			valueToString: (val, short) => {
+				var date = new Date(val).toDateString();
+				if (short) {
+					return date.slice(4, date.length - 5);	
+				}
+				return date.slice(0, 3) + ', ' + date.slice(4);
+			},
+			debug:false
+		}, 
+		zoomableData = {before:'overview', zoomIn: (value) =>{ 
+			const date = (new Date(value)).toJSON();
+			return `${date.slice(0, 7)}/${date.slice(8,10)}`; 
+		}},
+		chartViews = [
+			{
+				id: 'chart1',
+				title: 'Follower',
+				dataPath: 'data/1/',
+				dataParams: zoomableData
+			},
+			{
+				id: 'chart2',
+				title: 'Interactions',
+				dataPath: 'data/2/',
+				dataParams: zoomableData
+			},
+			{
+				id: 'chart3',
+				title: 'Messages',
+				dataPath: 'data/3/',
+				dataParams: zoomableData
+			},
+			{
+				id: 'chart4',
+				title: 'Views',
+				dataPath: 'data/4/',
+				dataParams: zoomableData
+			},
+			{
+				id: 'chart5',
+				title: 'Apps',
+				dataPath: 'data/5/',
+				dataParams: {before:'overview'}
 			}
-			return date.slice(0, 3) + ', ' + date.slice(4);
-		},
-		debug:false
-	};
-
-	const zoomableData = {before:'overview', zoomIn: (value) =>{ 
-		const date = (new Date(value)).toJSON();
-		return `${date.slice(0, 7)}/${date.slice(8,10)}`; 
-	}};
-	// eslint-disable-next-line no-undef
-	window.chartView1 = new ChartView('chart1', 'Followers', params, new DataLoader('data/1/', zoomableData));
-
-	// eslint-disable-next-line no-undef
-	window.chartView2 = new ChartView('chart2', 'Interactions', params, new DataLoader('data/2/',zoomableData));
-
-	// eslint-disable-next-line no-undef
-	window.chartView3 = new ChartView('chart3', 'Messages', params, new DataLoader('data/3/', zoomableData));
-
-	// eslint-disable-next-line no-undef
-	window.chartView4 = new ChartView('chart4', 'Views', params, new DataLoader('data/4/', zoomableData));
-
-	// eslint-disable-next-line no-undef
-	window.chartView5 = new ChartView('chart5', 'Apps', params, new DataLoader('data/5/', {before:'overview'}));
-
+		];
+	for(const view of chartViews) {
+		// eslint-disable-next-line no-undef
+		window[view.id] = new ChartView(view.id, view.title, params, new DataLoader(view.dataPath, view.dataParams));
+	}
 	window.switchMode = function () {
 		let mode = document.getElementById('mode').innerText.toLowerCase();
 		if (mode === 'night') {
@@ -41,10 +61,8 @@ window.addEventListener('load', () => {
 			document.getElementsByTagName('body')[0].className = 'day';
 			document.getElementById('mode').innerText = 'Night';
 		}
-		window.chartView1.updateColors();
-		window.chartView2.updateColors();
-		window.chartView3.updateColors();
-		window.chartView4.updateColors();
-		window.chartView5.updateColors();
+		for(const view of chartViews) {
+			window[view.id].updateColors();
+		}
 	};
 });

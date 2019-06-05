@@ -95,36 +95,56 @@
 'use strict';
 window.addEventListener('load', () => {
 	const params = {
-		devicePixelRatio: 1,
-		valueToString: (val, short) => {
-			var date = new Date(val).toDateString();
-			if (short) {
-				return date.slice(4, date.length - 5);	
+			devicePixelRatio: 1,
+			valueToString: (val, short) => {
+				var date = new Date(val).toDateString();
+				if (short) {
+					return date.slice(4, date.length - 5);	
+				}
+				return date.slice(0, 3) + ', ' + date.slice(4);
+			},
+			debug:false
+		}, 
+		zoomableData = {before:'overview', zoomIn: (value) =>{ 
+			const date = (new Date(value)).toJSON();
+			return `${date.slice(0, 7)}/${date.slice(8,10)}`; 
+		}},
+		chartViews = [
+			{
+				id: 'chart1',
+				title: 'Follower',
+				dataPath: 'data/1/',
+				dataParams: zoomableData
+			},
+			{
+				id: 'chart2',
+				title: 'Interactions',
+				dataPath: 'data/2/',
+				dataParams: zoomableData
+			},
+			{
+				id: 'chart3',
+				title: 'Messages',
+				dataPath: 'data/3/',
+				dataParams: zoomableData
+			},
+			{
+				id: 'chart4',
+				title: 'Views',
+				dataPath: 'data/4/',
+				dataParams: zoomableData
+			},
+			{
+				id: 'chart5',
+				title: 'Apps',
+				dataPath: 'data/5/',
+				dataParams: {before:'overview'}
 			}
-			return date.slice(0, 3) + ', ' + date.slice(4);
-		},
-		debug:false
-	};
-
-	const zoomableData = {before:'overview', zoomIn: (value) =>{ 
-		const date = (new Date(value)).toJSON();
-		return `${date.slice(0, 7)}/${date.slice(8,10)}`; 
-	}};
-	// eslint-disable-next-line no-undef
-	window.chartView1 = new ChartView('chart1', 'Followers', params, new DataLoader('data/1/', zoomableData));
-
-	// eslint-disable-next-line no-undef
-	window.chartView2 = new ChartView('chart2', 'Interactions', params, new DataLoader('data/2/',zoomableData));
-
-	// eslint-disable-next-line no-undef
-	window.chartView3 = new ChartView('chart3', 'Messages', params, new DataLoader('data/3/', zoomableData));
-
-	// eslint-disable-next-line no-undef
-	window.chartView4 = new ChartView('chart4', 'Views', params, new DataLoader('data/4/', zoomableData));
-
-	// eslint-disable-next-line no-undef
-	window.chartView5 = new ChartView('chart5', 'Apps', params, new DataLoader('data/5/', {before:'overview'}));
-
+		];
+	for(const view of chartViews) {
+		// eslint-disable-next-line no-undef
+		window[view.id] = new ChartView(view.id, view.title, params, new DataLoader(view.dataPath, view.dataParams));
+	}
 	window.switchMode = function () {
 		let mode = document.getElementById('mode').innerText.toLowerCase();
 		if (mode === 'night') {
@@ -134,168 +154,16 @@ window.addEventListener('load', () => {
 			document.getElementsByTagName('body')[0].className = 'day';
 			document.getElementById('mode').innerText = 'Night';
 		}
-		window.chartView1.updateColors();
-		window.chartView2.updateColors();
-		window.chartView3.updateColors();
-		window.chartView4.updateColors();
-		window.chartView5.updateColors();
+		for(const view of chartViews) {
+			window[view.id].updateColors();
+		}
 	};
 });
-const CanvasHelper = () => {
-
-
-
-};
-
-CanvasHelper.prototype = {
-    
-};
 'use strict';
 
 // eslint-disable-next-line no-unused-vars
 const ChartData = function() {
-	if ('WebAssembly' in window) {
 	
-		let wasm, wasm_module;
-
-		this.data = {
-			X_labels: [],
-			columns: []
-		};
-		this.env = 
-		{
-			callback: (value, index) => {console.log(value);}
-		};
-		this.setData = (data, xValToStr = undefined) => {
-			fetch('/js/chart.wasm')
-				.then(response => response.arrayBuffer())
-				.then(bits => WebAssembly.compile(bits))
-				.then(module => { return new WebAssembly.instantiate(module, this);})
-				.then(instance => {
-					console.log(instance);
-					wasm = instance;
-					wasm.exports.setFlags(data.stacked || false, data.y_scaled || false, data.percentage || false);
-					let scale_base = 0;
-			
-					for (let i = 0; i<data.columns.length;i++) {
-						const column = data.columns[i], id = column[0];
-
-						if (data.types[id] === 'x') {
-							this.data.X_labels = column.slice(1).map(x => { 
-								wasm.exports.pushX(x); 
-								return xValToStr ? xValToStr(x, true) : '';
-							});
-							continue;
-						}
-						const newColumn = {
-							id: id,
-							values: column.slice(1),
-							name: data.names[id],
-							type: data.types[id],
-							color: data.colors[id],
-							YMin: 1e309,
-							YMax: 0,
-							visible: true,
-							opacity: 1,
-						};
-			
-						newColumn.YMin = Math.min.apply(null, newColumn.values);
-						newColumn.YMax = Math.max.apply(null, newColumn.values);
-			
-						if(wasm.exports.isYScaled()) {
-
-							if(!scale_base) {
-								newColumn.y_scale = 1;
-								scale_base = newColumn.YMax - newColumn.YMin;
-							} else {
-								newColumn.y_scale = scale_base / (newColumn.YMax - newColumn.YMin);
-							}
-						}
-						this.data.columns.push(newColumn);
-					}
-					this.data.count = this.data.columns.length;
-				
-				})
-				// eslint-disable-next-line no-console
-				.catch(console.error);
-		};
-
-
-		this.pushCache = () => {
-			this.cache.push(this.data);
-		};
-		
-		this.popCache = () => {
-			this.data = this.cache.pop();
-		};
-
-		this.clearData = () => {
-			this.data = new Data();
-		};
-
-		this.findX = (X) => {
-			return binSearch(this.data.X, X);
-		};
-		
-		this.getFloorX = (X) => {
-			return binSearchFloor(this.data.X, X);
-		};
-
-		this.getCloserX = (X) => {
-			return binSearchCloser(this.data.X, X);
-		};
-
-		this.getSumYValues = (xIndex) => {
-			return sumByX(xIndex);
-		};
-
-		this.getXRange = () => {
-
-		};
-		this.getMinMaxValue = () => {
-			return {min:0, max: 0};
-		};
-		this.getFloorX = () => {
-
-		};
-		this.forEachColumn = () => {
-
-		};
-		this.forEachX = (callback, from = 0, to = undefined) => {
-			to = to || -1;
-			if(wasm) {
-				try{
-				//WebAssembly.Module.cwrap('passFnPointer', 'undefined', ['number'])(WebAssembly.Module.addFunction(callback))
-					this.env.callback = callback;
-					wasm.exports.forEachX(callback, from, to);
-				}
-				catch(err) {
-					console.error(err);
-					let t = Date.now();
-					while(t + 2000 > Date.now()){}
-				}
-			}
-		};
-
-		this.getX = (index) => {
-			if(wasm)
-				return wasm.exports.getX(index);
-			else 0;
-		};
-	
-		this.getLength = () => {
-			if(wasm)
-				return wasm.exports.getLengthX();
-			else 0;
-		};
-	
-		this.getXLabel = (index) => {
-			return this.data.X_labels[index];
-		};
-		return;
-	}
-
-	/* NO-WEBASSEMBLY-SUPPORT */
 	const 	binSearch = (arr, value) => {
 			let start = 0;
 			let stop = arr.length - 1;
@@ -614,8 +482,8 @@ const ChartRender = function(canvas, chart, dpr, anim, params) {
 				if(x_range.skipFactor >= 1) {
 					let localFactor = index % x_range.skipFactor;
 					if (anim.CR_xrange_skipAlpha_fadeOut && localFactor == x_range.skipFactor / 2) {
-						ctx.measureText(chart.getXlabel(0), 0, 0, params.fntAxesSize).width;
-						text(chart.getXlabel(index), x, y, x_range.skipAlpha);
+						ctx.measureText(chart.getXLabel(0), 0, 0, params.fntAxesSize).width;
+						text(chart.getXLabel(index), x, y, x_range.skipAlpha);
 
 						if(params.debug) {
 							ctx.beginPath();
@@ -628,7 +496,7 @@ const ChartRender = function(canvas, chart, dpr, anim, params) {
 						return;
 					}
 					if (anim.CR_xrange_skipAlpha_fadeIn && (index % (x_range.skipFactor * 2) == x_range.skipFactor)) {
-						text(chart.getXlabel(index), x, y, x_range.skipAlpha);
+						text(chart.getXLabel(index), x, y, x_range.skipAlpha);
 
 						if(params.debug) {
 							ctx.beginPath();
@@ -1293,10 +1161,6 @@ const ChartRender = function(canvas, chart, dpr, anim, params) {
 	this.direct = () => true;//pie.active || !chart.data.stacked;
 };
 /* chartView.js */
-//DONE: 1 zoomIn/Out animation ?
-//DONE: 2. Range navigator 
-//DONE: 3 Pie chart: animation, selection, moving ...
-//DONE: 4. Pie chart - navigator (week) - step to day
 //TODO: Night style
 // TODO: CSS anim
 // DONE: mouse events
@@ -1306,9 +1170,9 @@ const ChartRender = function(canvas, chart, dpr, anim, params) {
 // TODO Bugs: 
 // - HIde x-values on sides of screen
 // - yMin of chartRender
-// - zooming anim ??????
 
 'use strict';
+// eslint-disable-next-line no-unused-vars
 const ChartView = function (c, title, params, dataLoader) {
 	/* PRIVATE METHODS */
 	const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -1316,7 +1180,7 @@ const ChartView = function (c, title, params, dataLoader) {
 			const e = document.createElement(tag);
 			parent.appendChild(e);
 			e.classList.add(classes);
-			e.innerHTML = html;
+			e.innerHTML = html; 
 			return e;
 		},
 		getCloserStep = (value, stepLength) => {

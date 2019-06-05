@@ -1,8 +1,4 @@
 /* chartView.js */
-//DONE: 1 zoomIn/Out animation ?
-//DONE: 2. Range navigator 
-//DONE: 3 Pie chart: animation, selection, moving ...
-//DONE: 4. Pie chart - navigator (week) - step to day
 //TODO: Night style
 // TODO: CSS anim
 // DONE: mouse events
@@ -12,9 +8,9 @@
 // TODO Bugs: 
 // - HIde x-values on sides of screen
 // - yMin of chartRender
-// - zooming anim ??????
 
 'use strict';
+// eslint-disable-next-line no-unused-vars
 const ChartView = function (c, title, params, dataLoader) {
 	/* PRIVATE METHODS */
 	const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -22,7 +18,7 @@ const ChartView = function (c, title, params, dataLoader) {
 			const e = document.createElement(tag);
 			parent.appendChild(e);
 			e.classList.add(classes);
-			e.innerHTML = html;
+			e.innerHTML = html; 
 			return e;
 		},
 		getCloserStep = (value, stepLength) => {
