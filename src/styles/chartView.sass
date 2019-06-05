@@ -1,0 +1,434 @@
+$no_alpha: 1;
+
+$day_bkg: #FFF;
+$day_axes_text: #8E8E93;
+$day_border_color: #182D3B;
+$day_light_color: #FFFFFF;
+$day_border_alpha: .1;
+$day_nav_bkg: #E2EEF9;
+$day_nav_sel: #C0D1E1;
+
+$night_bkg: #242F3E;
+$night_axes_text: #A3B1C2;
+$night_axes_text_alpha: .6;
+$night_border_color: #FFFFFF;
+$night_light_color: #242F3E;
+$night_border_alpha: .1;
+$night_nav_bkg: #304259;
+$night_nav_sel: #56626D;
+
+
+    
+.chart-container
+    position: relative;
+    min-height: 66vh;
+    padding: 2em 1em;
+    background-color: '#FFFFFF';
+    .title
+        display: inline-block;
+        font-weight: 600;
+        width: 35%;
+        font-size: 1.1em;
+    .zoom-out
+        display: none;
+        color: #108BE3;
+        width: 35%;
+        font-size: 1em;
+        background-image: url('/img/zoomOut.png');
+        background-size: 1em 1em;
+        background-position: 0px 3px;
+        background-repeat: no-repeat;
+        padding-left: 26px;
+    .range
+        display: inline-block;
+        width: 58%;
+        font-size: 0.8em;
+        text-align: right;
+    .canvas-container
+        min-height: 47vh;
+        margin-bottom: 6px;
+        box-sizing: content-box;
+        .chart
+            width: 100%;
+            height: 100%;
+            border-color: rgba($day_border_color, $day_border_alpha);
+            background-color: rgba($day_bkg, $no_alpha);
+            color: rgba($day_axes_text, $no_alpha);
+            lighting-color: $day_light_color;
+    .plaque
+        display: none;
+        position: absolute
+        background: #FFF;
+        block-size: initial;
+        min-width: 50px;
+        min-height: 2em;
+        margin-top: 18px;
+        border-radius: 10px;
+        padding-top: 6px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        font-size: 1em;
+        box-shadow: 2px 2px 10px grey;
+        margin-left: 15px;
+        .caption 
+            font-weight: bold;
+            cursor: pointer;
+            &::after
+                content: '';
+                background-image: url('../img/arrow-day.png');
+                color: rgba($day_border_color, .6);
+                height: 0.8em;
+                margin-bottom: 3px;
+                margin-left: 10px;
+                display: inline-block;
+                margin-top: 0.2em;
+                float: right;
+                width: 0.5em;
+                background-size: contain;
+                background-repeat: no-repeat;
+        .list
+            div
+                margin-top: 2px;
+            span:last-child
+                float: right;
+                margin-left: 16px;
+        .percentage span:first-child
+            font-weight: bold;
+            text-align: right;
+            width: 1.9em;
+            display: inline-block;
+            margin-right: 6px;
+        &.show
+            display: block;
+    .preview-container
+        position: relative;
+        width: 100%;
+        height: 6.2vh;
+        overflow: hidden;
+        padding: 1px 0;
+        border-radius: 0.3em;
+        .preview
+            height: 100%;
+            width: 100%;
+            margin-top: -1px;
+        .nav
+            position: absolute;
+            top: 0;
+            height: inherit;    
+            border: 1px solid #C0D1E1;
+            border-radius: 0.3em;
+            min-width: 1.2em;
+            max-width: 100%;
+            &::after, &::before
+                content: '';
+                position: absolute;
+                background-color: $day_nav_bkg;
+                opacity: 0.6;
+                width: 100vw;
+                height: 100%;
+                border: 2px solid $day_nav_bkg;
+                margin-top: -1px;
+                z-index: 1;
+            &::before
+                left: -100vw;
+                margin-left: 0px;
+            &::after
+                left: 100%;
+            .nav-right,.nav-left
+                position: relative;
+                display: inline-block;
+                background-color: $day_nav_sel;
+                border-left: 1px solid #FFF;
+                border-right: 1px solid #FFF;
+                width: 0.6em;
+                height: 100%;
+                z-index: 100;            
+            .nav-right
+                border-radius: 0 0.2em 0.2em 0;
+                margin-right: -1px;
+                position: absolute;
+                right: 0;
+            .nav-left
+                border-radius: 0.2em 0 0 0.2em;
+                margin-left: -1px;
+            .nav-right::before,.nav-left::after
+                content: '';
+                border-left: 2px solid #FFF;
+                height: 0.6em;
+                display: block;
+                position: absolute;
+                top: 50%;
+                margin-top: -0.3em;
+                margin-left: 0.2em;
+            .nav-right::after, .nav-left::before
+                content: '';
+                position: absolute;
+                width: 100vw;
+                height: 100%;
+            .nav-left::before
+                left: -100vw;
+                margin-left: 0px;
+            .nav-right::after
+                left: 100%;
+    &.zoomed
+        .title
+            display: none;
+        .zoom-out
+            display: inline-block;
+        .plaque
+            .caption::after
+                display: none;
+    .legend
+        display: flex;
+        display: -webkit-flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: flex-start;
+        align-content: flex-start;
+        width: 100%;
+        margin-left: -10px 
+        div
+            position: relative;
+            flex: 0 0 auto;
+            margin: 10px;
+            padding: 8px;
+            padding-left: 40px;
+            padding-right: 12px
+            height: 23px;
+            border-radius: 20px;
+            background-image: url(/img/check.png);
+            background-repeat: no-repeat;
+            background-size: 15px 12px;
+            background-position: 13px 14px;
+            &::before 
+                content: '';
+                position: absolute;
+                border-radius: 18px;
+                top: 3px;
+                bottom: 3px;
+                left: 3px;
+                right: 3px;
+                background: #fff;
+                animation: check-in  .3s;
+                animation-fill-mode: forwards;
+            span 
+                color: #FFF !important;
+            &.unchecked 
+                span 
+                    position: relative;
+                    color: inherit !important;
+                    margin-left: -14px;
+                    margin-right: 14px;
+            &.unchecked::before
+                animation: check-out  .3s;
+                animation-fill-mode: forwards; 
+            &::after
+                content: '';
+                position: absolute;
+                border-radius: 18px;
+                top: 3px;
+                bottom: 3px;
+                left: 3px;
+                right: 3px;
+
+
+
+.night
+    .chart-container
+        position: relative;
+        min-height: 66vh;
+        padding: 2em 1em;
+        background-color: $night_bkg;
+        color: #FFF;
+        .title
+            display: inline-block;
+            font-weight: 600;
+            width: 35%;
+            font-size: 1.1em;
+        .zoom-out
+            display: none;
+            color: #108BE3;
+            width: 35%;
+            font-size: 1em;
+            background-image: url('/img/zoomOut.png');
+            background-size: 1em 1em;
+            background-position: 0px 3px;
+            background-repeat: no-repeat;
+            padding-left: 26px;
+        .range
+            display: inline-block;
+            width: 58%;
+            font-size: 0.8em;
+            text-align: right;
+        .canvas-container
+            min-height: 47vh;
+            max-height: 67vh;
+            margin-bottom: 6px;
+            .chart
+                color: rgba($night_axes_text, $no_alpha);
+                border-color: rgba($night_border_color, $day_border_alpha);
+                background-color: rgba($night_bkg, $no_alpha);
+                lighting-color: $night_light_color;
+        .plaque
+            display: none;
+            position: absolute
+            background: $night_bkg;
+            block-size: initial;
+            min-width: 50px;
+            min-height: 2em;
+            margin-top: 18px;
+            border-radius: 10px;
+            padding-top: 6px;
+            padding-bottom: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
+            font-size: 1em;
+            box-shadow: 2px 2px 10px grey;
+            .caption 
+                font-weight: bold;
+                cursor: pointer;
+                &::after
+                    content: '';
+                    background-image: url('../img/arrow-day.png');
+                    color: rgba($day_border_color, .6);
+                    height: 0.8em;
+                    margin-bottom: 3px;
+                    margin-left: 10px;
+                    display: inline-block;
+                    margin-top: 0.2em;
+                    float: right;
+                    width: 0.5em;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+            .list
+                div
+                    margin-top: 2px;
+                span:last-child
+                    float: right;
+                    margin-left: 16px;
+            .percentage span:first-child
+                font-weight: bold;
+                text-align: right;
+                width: 1.9em;
+                display: inline-block;
+                margin-right: 6px;
+            &.show
+                display: block;
+        .preview-container
+            position: relative;
+            width: 100%;
+            height: 6.2vh;
+            overflow: hidden;
+            padding: 1px 0;
+            border-radius: 0.3em;
+            .preview
+                height: 100%;
+                width: 100%;
+                margin-top: -1px;
+            .nav
+                position: absolute;
+                top: 0;
+                height: inherit;    
+                border: 1px solid $night_nav_sel;
+                border-radius: 0.3em;
+                min-width: 1.2em;
+                max-width: 100%;
+                &::after, &::before
+                    content: '';
+                    position: absolute;
+                    background-color: $night_nav_bkg;
+                    opacity: 0.6;
+                    width: 100vw;
+                    height: 100%;
+                    border: 2px solid $night_nav_bkg;
+                    margin-top: -1px;
+                    z-index: 1;
+                &::before
+                    left: -100vw;
+                    margin-left: 0px;
+                &::after
+                    left: 100%;
+                .nav-right,.nav-left
+                    position: relative;
+                    display: inline-block;
+                    background-color: $night_nav_sel;
+                    border-left: 1px solid #FFF;
+                    border-right: 1px solid #FFF;
+                    width: 0.6em;
+                    height: 100%;
+                    z-index: 100;            
+                .nav-right
+                    border-radius: 0 0.2em 0.2em 0;
+                    margin-right: -1px;
+                    position: absolute;
+                    right: 0;
+                .nav-left
+                    border-radius: 0.2em 0 0 0.2em;
+                    margin-left: -1px;
+                .nav-right::before,.nav-left::after
+                    content: '';
+                    border-left: 2px solid #FFF;
+                    height: 0.6em;
+                    display: block;
+                    position: absolute;
+                    top: 50%;
+                    margin-top: -0.3em;
+                    margin-left: 0.2em;
+                .nav-right::after, .nav-left::before
+                    content: '';
+                    position: absolute;
+                    width: 100vw;
+                    height: 100%;
+                .nav-left::before
+                    left: -100vw;
+                    margin-left: 0px;
+                .nav-right::after
+                    left: 100%;
+        &.zoomed
+            .title
+                display: none;
+            .zoom-out
+                display: inline-block;
+            .plaque
+                .caption::after
+                    display: none;
+        .legend
+            display: flex;
+            display: -webkit-flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-start;
+            align-content: flex-start;
+            width: 100%;
+            margin-left: -10px 
+            div::before
+                background-color: $night-bkg;
+
+
+@keyframes check-in 
+    from 
+        top: 2px;
+        left: 2px;  
+        rigth: 2px;
+        bottom: 2px;
+    to 
+        top: 50%;
+        left: 50%;
+        right: 50%;
+        bottom: 50%;
+  
+
+@keyframes check-out 
+    from 
+        top: 50%;
+        left: 50%;
+        right: 50%;
+        bottom: 50%;
+    to 
+        top: 2px;
+        left: 2px;  
+        rigth: 2px;
+        bottom: 2px;

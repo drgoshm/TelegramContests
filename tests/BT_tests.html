@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>BT tests</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://unpkg.com/mocha@4.0.1/mocha.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="mocha">
+        <div>
+            <p>AVLBinaryTree testing with values: 2,3,4,5,6,7,8,9,10,11,12,13,14,37,40,41,42</p>
+        </div>
+    </div>
+    <script src="https://unpkg.com/chai@4.1.2/chai.js"></script>
+    <script src="https://unpkg.com/mocha@4.0.1/mocha.js"></script>
+    <script>mocha.setup('bdd')</script>   
+    <script>
+        Array.prototype.binarySearch = function(value) {
+            let start = 0
+            let stop = this.length - 1
+            let middle = Math.floor((start + stop) / 2)
+            while (this[middle] !== value && start < stop) {
+                if (value < this[middle]) {
+                    stop = middle - 1
+                } else {
+                    start = middle + 1
+                }
+                middle = Math.floor((start + stop) / 2)
+            }
+            return (this[middle] !== value) ? -1 : middle
+        };
+    </script>
+    <script src="avlbt.js"></script>
+    <script>
+        
+        let bt = new AVLBinaryTree(), arr, bt_time = 0, arr_time = 0, bs_time = 0, find_passed = false;
+        describe('AVLBinaryTree.push ', function () {
+            it('adding [10,11,12,13,14] should return 11 as root ', function () {
+                chai.expect(bt.push(10).push(11).push(12).push(13).push(14).root.value).to.equal(11);
+            });
+
+            it('adding [2,3,4,5,6,7,8,9,41,42,40] should return 7 as root ', function () {
+                chai.expect(bt.push(2).push(3).push(4).push(5).push(6).push(7).push(8).push(9).push(41).push(42).push(40).push(37).root.value).to.equal(7);
+            });
+
+            it('and `begin` property should be equal 2', function () {
+                chai.expect(bt.begin.value).to.equal(2);
+            });
+
+            it('and `end` property should be equal 42', function () {
+                chai.expect(bt.end.value).to.equal(42);
+            });
+        });
+
+        describe('AVLBinaryTree.find', function () {
+            it('.find(14) should return 14 as value of found node', function () {
+                chai.expect(bt.find(14).value).to.equal(14);
+            });
+
+            it('.find(41) should return 41 as value of found node', function () {
+                chai.expect(bt.find(41).value).to.equal(41);
+            });
+
+
+            it('.find(15) should return `undefined` ', function () {
+                chai.expect(bt.find(15)).to.be.undefined;
+            });
+        });
+
+        describe('AVLBinaryTree.findFloor(17)', function () {
+            it('should return 14 as value of found node', function () {
+                chai.expect(bt.findFloor(17).value).to.equal(14);
+            });
+        });
+        describe('AVLBinaryTree.findCloser', function () {
+            it('findCloser(30) should return 37 as value of found node', function () {
+                chai.expect(bt.findCloser(30).value).to.equal(37);
+            });
+            it('findCloser(20) should return 14 as value of found node', function () {
+                chai.expect(bt.findCloser(20).value).to.equal(14);
+            });
+        });
+        describe('AVLBinaryTree.each(()=>{ push to array })', function () {
+            it('should return `2,3,4,5... 41,42` ', function () {
+                chai.expect((()=>{let r = [];bt.each((n)=>{r.push(n.value);});return r.join(',');})()).to.equal('2,3,4,5,6,7,8,9,10,11,12,13,14,37,40,41,42');
+            });
+        });
+
+        describe('AVLBinaryTree.toArray ', function () {
+            it('should return 7 as value of 5th element ', function () {
+                chai.expect(bt.toArray()[5].value).to.equal(7);
+            });
+
+            it('should return 12 as value of 10th element ', function () {
+                chai.expect(bt.toArray()[10].value).to.equal(12);
+            });
+        });
+
+
+        describe('Stress testing (Array vs AVLBinaryTree)', function () {
+            before(function() {
+                arr = bt.toArray();
+                for(let i=99999; i--;) {
+                    // 0..100 + 100000 00 , 0..100 + 99999 00  
+                    let rand = Math.ceil(100*Math.random() + (i+1)*100);
+                    arr.push(rand);
+                    bt.push(rand);
+                }
+
+                (new Promise((resolve, reject) => {
+                    for(let i = 3000; i--;) {
+                        let val = arr[Math.ceil(100017*Math.random())],
+                        start = Date.now();
+                        let n = bt.find(val);
+                        bt_time += Date.now() - start;
+                        if(n.value!==val) { find_passed = false; break; }
+
+                        start = Date.now();
+                        n = arr.find(function(elem){
+                            return elem === val;
+                        });
+                        arr_time += Date.now() - start;
+
+                        start = Date.now();
+                        n = arr.binarySearch(val);
+                        bs_time += Date.now() - start;
+                    }
+                    resolve()
+                })).then(() => {
+                    find_passed = true;
+
+                    document.querySelector('#mocha-report > .suite:last-child').innerHTML += '<span>(AVLBinaryTree: ' + bt_time + 'ms) ~ (Array.binarySearch: ' + bs_time
++ 'ms) < (Array.find: ' + arr_time + 'ms)</span>';
+                })
+            });
+
+
+            
+            it('AVLBinaryTree.length should be equal Array.length', function () {
+                chai.expect(bt.length === arr.length).to.equal(true);
+            });
+
+            it('AVLBinaryTree.find should be passed', function () {
+                chai.expect(find_passed).to.equal(true);
+            });
+
+            it('AVLBinaryTree.find should be faster than Array.find', function () {
+                    chai.expect(bt_time < arr_time, ).to.equal(true);
+            });
+
+            it('AVLBinaryTree.find should be faster than custom Array.bianrySearch or equal (+- 2ms)', function () {
+                    chai.expect(bt_time <= bs_time || Math.abs(bt_time - bs_time) < 3 , ).to.equal(true);
+            });
+            after(function() {
+
+            });
+        });
+
+
+        mocha.checkLeaks();
+        mocha.run();
+    </script>
+</body>
+</html>

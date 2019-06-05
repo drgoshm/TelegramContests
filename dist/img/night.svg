@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="52"
+   height="52"
+   viewBox="0 0 52 52"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   inkscape:export-filename="/home/drgosh/Projects/Telegram Contests/day-night.png"
+   inkscape:export-xdpi="360"
+   inkscape:export-ydpi="360"
+   sodipodi:docname="night.svg">
+  <defs
+     id="defs4">
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect4149"
+       is_visible="true" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="7.9195959"
+     inkscape:cx="28.298988"
+     inkscape:cy="19.75051"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     units="px"
+     inkscape:window-width="1366"
+     inkscape:window-height="714"
+     inkscape:window-x="0"
+     inkscape:window-y="30"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(147.42817,-302.0601)">
+    <path
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -122.22844,302.57647 c -4.49427,0.51247 -8.84442,2.24071 -12.46324,4.9546 -3.61883,2.7139 -6.49668,6.40665 -8.24151,10.57997 -1.74483,4.17333 -2.35173,8.81637 -1.73517,13.29755 0.61656,4.48118 2.45528,8.78851 5.26733,12.3316 2.55826,3.22333 5.91642,5.81095 9.69601,7.43862 3.77959,1.62766 7.97394,2.28959 12.06853,1.87851 4.09458,-0.41107 8.0798,-1.89702 11.42861,-4.28869 3.34881,-2.39167 6.05103,-5.68545 7.718018,-9.44786 0.253864,-0.57298 0.486828,-1.16743 0.537287,-1.79209 0.02523,-0.31233 0.0037,-0.63007 -0.08238,-0.93136 -0.08608,-0.3013 -0.238075,-0.58587 -0.454909,-0.81208 -0.247561,-0.25826 -0.574065,-0.43438 -0.919404,-0.5278 -0.345339,-0.0934 -0.709214,-0.10667 -1.064874,-0.0681 -0.71133,0.0772 -1.38238,0.35556 -2.05632,0.59587 -3.63446,1.29594 -7.67366,1.52219 -11.37952,0.44732 -3.70586,-1.07487 -7.04535,-3.47979 -9.07607,-6.76078 -2.11304,-3.41398 -2.74085,-7.6362 -2.11092,-11.60148 0.62993,-3.96527 2.45614,-7.68032 4.88884,-10.87441 0.3963,-0.52033 0.81441,-1.03765 1.05879,-1.64435 0.12219,-0.30334 0.19892,-0.62752 0.19925,-0.95455 3.3e-4,-0.32703 -0.078,-0.65718 -0.24789,-0.93664 -0.14469,-0.23805 -0.3528,-0.43482 -0.59013,-0.5807 -0.23732,-0.14587 -0.50336,-0.24191 -0.77618,-0.29824 -0.54564,-0.11265 -1.11059,-0.0681 -1.66415,-0.005 z"
+       id="path4147"
+       inkscape:connector-curvature="0"
+       inkscape:path-effect="#path-effect4149"
+       inkscape:original-d="m -122.22844,302.57647 c -6.57843,4.43295 -25.61734,29.85918 -17.17259,41.16372 8.44475,11.30454 35.85531,1.15371 40.911168,-4.41942 5.055866,-5.57313 0.892852,-2.64267 0,-3.53553 -0.892853,-0.89286 -0.01,0.50853 -4.040598,0 -4.03068,-0.50853 -16.19452,-0.31246 -20.45559,-6.31346 -4.26107,-6.001 1.95011,-17.96769 2.77792,-22.47589 0.82781,-4.5082 1.83543,-2.44144 1.01015,-3.53554 -0.82528,-1.0941 3.54797,-5.31683 -3.03046,-0.88388 z"
+       sodipodi:nodetypes="zzzzzzzzz" />
+  </g>
+</svg>

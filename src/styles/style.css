@@ -1,0 +1,77 @@
+@font-face {
+    font-family: Roboto;
+    src: url(fonts/Roboto-Regular.ttf);
+}
+@font-face {
+    font-family: Roboto-Bold;
+    src: url(fonts/Roboto-Bold.ttf);
+}
+@font-face {
+    font-family: Roboto-Light;
+    src: url(fonts/Roboto-Light.ttf);
+}
+@font-face {
+    font-family: Roboto-Thin;
+    src: url(fonts/Roboto-Thin.ttf);
+}
+@font-face {
+    font-family: Roboto-Medium;
+    src: url(fonts/Roboto-Medium.ttf);
+}
+
+
+body {
+    padding: 0;
+    margin: 0;
+    font-family: Roboto, Arial, sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -webkit-touch-callout: none;
+}
+body.night {
+    background-color: #242F3E;
+}
+
+a {
+    color: #108BE3;
+  }
+  
+  footer {
+    width: 100%;
+    padding-bottom: 16px;
+    background-color: inherit;
+  }
+  
+  footer a {
+    display: block;
+    text-align: center;
+    font-size: 1.4em;
+    text-decoration: none;
+    color: #108BE3;
+  }
+
+/*
+@media screen and (max-width: 1600px) {
+    body { 
+        min-height: 400px;
+        display: flex;
+        display: -webkit-flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: auto;
+        align-content: flex-start;
+    }
+    .chart-container  {
+        display: inline-block;
+        flex: 0 0 auto;
+        margin: 5px;
+    }
+}
+        
+/*@media screen and (max-width: 1280px) 
+
+@media screen and (max-width: 1024px)
+@media screen and (max-width: 480px)
+@media screen and (max-width: 260px)*/
