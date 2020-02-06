@@ -1,0 +1,631 @@
+@font-face {
+  font-family: Roboto;
+  src: url(fonts/Roboto-Regular.ttf);
+}
+
+@font-face {
+  font-family: Roboto-Bold;
+  src: url(fonts/Roboto-Bold.ttf);
+}
+
+@font-face {
+  font-family: Roboto-Light;
+  src: url(fonts/Roboto-Light.ttf);
+}
+
+@font-face {
+  font-family: Roboto-Thin;
+  src: url(fonts/Roboto-Thin.ttf);
+}
+
+@font-face {
+  font-family: Roboto-Medium;
+  src: url(fonts/Roboto-Medium.ttf);
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Roboto, Arial, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+body.night {
+  background-color: #242F3E;
+}
+
+a {
+  color: #108BE3;
+}
+
+footer {
+  width: 100%;
+  padding-bottom: 16px;
+  background-color: inherit;
+}
+
+footer a {
+  display: block;
+  text-align: center;
+  font-size: 1.4em;
+  text-decoration: none;
+  color: #108BE3;
+}
+
+/*
+@media screen and (max-width: 1600px) {
+    body { 
+        min-height: 400px;
+        display: flex;
+        display: -webkit-flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: auto;
+        align-content: flex-start;
+    }
+    .chart-container  {
+        display: inline-block;
+        flex: 0 0 auto;
+        margin: 5px;
+    }
+}
+        
+/*@media screen and (max-width: 1280px) 
+
+@media screen and (max-width: 1024px)
+@media screen and (max-width: 480px)
+@media screen and (max-width: 260px)*/
+.chart-container {
+  position: relative;
+  min-height: 66vh;
+  padding: 2em 1em;
+  background-color: '#FFFFFF';
+}
+
+.chart-container .title {
+  display: inline-block;
+  font-weight: 600;
+  width: 35%;
+  font-size: 1.1em;
+}
+
+.chart-container .zoom-out {
+  display: none;
+  color: #108BE3;
+  width: 35%;
+  font-size: 1em;
+  background-image: url("/img/zoomOut.png");
+  background-size: 1em 1em;
+  background-position: 0px 3px;
+  background-repeat: no-repeat;
+  padding-left: 26px;
+}
+
+.chart-container .range {
+  display: inline-block;
+  width: 58%;
+  font-size: 0.8em;
+  text-align: right;
+}
+
+.chart-container .canvas-container {
+  min-height: 47vh;
+  margin-bottom: 6px;
+  box-sizing: content-box;
+}
+
+.chart-container .canvas-container .chart {
+  width: 100%;
+  height: 100%;
+  border-color: rgba(24, 45, 59, 0.1);
+  background-color: white;
+  color: #8e8e93;
+  lighting-color: #FFFFFF;
+}
+
+.chart-container .plaque {
+  display: none;
+  position: absolute;
+  background: #FFF;
+  block-size: initial;
+  min-width: 50px;
+  min-height: 2em;
+  margin-top: 18px;
+  border-radius: 10px;
+  padding-top: 6px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 1em;
+  box-shadow: 2px 2px 10px grey;
+  margin-left: 15px;
+}
+
+.chart-container .plaque .caption {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.chart-container .plaque .caption::after {
+  content: '';
+  background-image: url("../img/arrow-day.png");
+  color: rgba(24, 45, 59, 0.6);
+  height: 0.8em;
+  margin-bottom: 3px;
+  margin-left: 10px;
+  display: inline-block;
+  margin-top: 0.2em;
+  float: right;
+  width: 0.5em;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.chart-container .plaque .list div {
+  margin-top: 2px;
+}
+
+.chart-container .plaque .list span:last-child {
+  float: right;
+  margin-left: 16px;
+}
+
+.chart-container .plaque .percentage span:first-child {
+  font-weight: bold;
+  text-align: right;
+  width: 1.9em;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.chart-container .plaque.show {
+  display: block;
+}
+
+.chart-container .preview-container {
+  position: relative;
+  width: 100%;
+  height: 6.2vh;
+  overflow: hidden;
+  padding: 1px 0;
+  border-radius: 0.3em;
+}
+
+.chart-container .preview-container .preview {
+  height: 100%;
+  width: 100%;
+  margin-top: -1px;
+}
+
+.chart-container .preview-container .nav {
+  position: absolute;
+  top: 0;
+  height: inherit;
+  border: 1px solid #C0D1E1;
+  border-radius: 0.3em;
+  min-width: 1.2em;
+  max-width: 100%;
+}
+
+.chart-container .preview-container .nav::after,
+.chart-container .preview-container .nav::before {
+  content: '';
+  position: absolute;
+  background-color: #E2EEF9;
+  opacity: 0.6;
+  width: 100vw;
+  height: 100%;
+  border: 2px solid #E2EEF9;
+  margin-top: -1px;
+  z-index: 1;
+}
+
+.chart-container .preview-container .nav::before {
+  left: -100vw;
+  margin-left: 0px;
+}
+
+.chart-container .preview-container .nav::after {
+  left: 100%;
+}
+
+.chart-container .preview-container .nav .nav-right,
+.chart-container .preview-container .nav .nav-left {
+  position: relative;
+  display: inline-block;
+  background-color: #C0D1E1;
+  border-left: 1px solid #FFF;
+  border-right: 1px solid #FFF;
+  width: 0.6em;
+  height: 100%;
+  z-index: 100;
+}
+
+.chart-container .preview-container .nav .nav-right {
+  border-radius: 0 0.2em 0.2em 0;
+  margin-right: -1px;
+  position: absolute;
+  right: 0;
+}
+
+.chart-container .preview-container .nav .nav-left {
+  border-radius: 0.2em 0 0 0.2em;
+  margin-left: -1px;
+}
+
+.chart-container .preview-container .nav .nav-right::before,
+.chart-container .preview-container .nav .nav-left::after {
+  content: '';
+  border-left: 2px solid #FFF;
+  height: 0.6em;
+  display: block;
+  position: absolute;
+  top: 50%;
+  margin-top: -0.3em;
+  margin-left: 0.2em;
+}
+
+.chart-container .preview-container .nav .nav-right::after,
+.chart-container .preview-container .nav .nav-left::before {
+  content: '';
+  position: absolute;
+  width: 100vw;
+  height: 100%;
+}
+
+.chart-container .preview-container .nav .nav-left::before {
+  left: -100vw;
+  margin-left: 0px;
+}
+
+.chart-container .preview-container .nav .nav-right::after {
+  left: 100%;
+}
+
+.chart-container.zoomed .title {
+  display: none;
+}
+
+.chart-container.zoomed .zoom-out {
+  display: inline-block;
+}
+
+.chart-container.zoomed .plaque .caption::after {
+  display: none;
+}
+
+.chart-container .legend {
+  display: flex;
+  display: -webkit-flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  width: 100%;
+  margin-left: -10px;
+}
+
+.chart-container .legend div {
+  position: relative;
+  flex: 0 0 auto;
+  margin: 10px;
+  padding: 8px;
+  padding-left: 40px;
+  padding-right: 12px;
+  height: 23px;
+  border-radius: 20px;
+  background-image: url(/img/check.png);
+  background-repeat: no-repeat;
+  background-size: 15px 12px;
+  background-position: 13px 14px;
+}
+
+.chart-container .legend div::before {
+  content: '';
+  position: absolute;
+  border-radius: 18px;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  right: 3px;
+  background: #fff;
+  animation: check-in  .3s;
+  animation-fill-mode: forwards;
+}
+
+.chart-container .legend div span {
+  color: #FFF !important;
+}
+
+.chart-container .legend div.unchecked span {
+  position: relative;
+  color: inherit !important;
+  margin-left: -14px;
+  margin-right: 14px;
+}
+
+.chart-container .legend div.unchecked::before {
+  animation: check-out  .3s;
+  animation-fill-mode: forwards;
+}
+
+.chart-container .legend div::after {
+  content: '';
+  position: absolute;
+  border-radius: 18px;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  right: 3px;
+}
+
+.night .chart-container {
+  position: relative;
+  min-height: 66vh;
+  padding: 2em 1em;
+  background-color: #242F3E;
+  color: #FFF;
+}
+
+.night .chart-container .title {
+  display: inline-block;
+  font-weight: 600;
+  width: 35%;
+  font-size: 1.1em;
+}
+
+.night .chart-container .zoom-out {
+  display: none;
+  color: #108BE3;
+  width: 35%;
+  font-size: 1em;
+  background-image: url("/img/zoomOut.png");
+  background-size: 1em 1em;
+  background-position: 0px 3px;
+  background-repeat: no-repeat;
+  padding-left: 26px;
+}
+
+.night .chart-container .range {
+  display: inline-block;
+  width: 58%;
+  font-size: 0.8em;
+  text-align: right;
+}
+
+.night .chart-container .canvas-container {
+  min-height: 47vh;
+  max-height: 67vh;
+  margin-bottom: 6px;
+}
+
+.night .chart-container .canvas-container .chart {
+  color: #a3b1c2;
+  border-color: rgba(255, 255, 255, 0.1);
+  background-color: #242f3e;
+  lighting-color: #242F3E;
+}
+
+.night .chart-container .plaque {
+  display: none;
+  position: absolute;
+  background: #242F3E;
+  block-size: initial;
+  min-width: 50px;
+  min-height: 2em;
+  margin-top: 18px;
+  border-radius: 10px;
+  padding-top: 6px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 1em;
+  box-shadow: 2px 2px 10px grey;
+}
+
+.night .chart-container .plaque .caption {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.night .chart-container .plaque .caption::after {
+  content: '';
+  background-image: url("../img/arrow-day.png");
+  color: rgba(24, 45, 59, 0.6);
+  height: 0.8em;
+  margin-bottom: 3px;
+  margin-left: 10px;
+  display: inline-block;
+  margin-top: 0.2em;
+  float: right;
+  width: 0.5em;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.night .chart-container .plaque .list div {
+  margin-top: 2px;
+}
+
+.night .chart-container .plaque .list span:last-child {
+  float: right;
+  margin-left: 16px;
+}
+
+.night .chart-container .plaque .percentage span:first-child {
+  font-weight: bold;
+  text-align: right;
+  width: 1.9em;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.night .chart-container .plaque.show {
+  display: block;
+}
+
+.night .chart-container .preview-container {
+  position: relative;
+  width: 100%;
+  height: 6.2vh;
+  overflow: hidden;
+  padding: 1px 0;
+  border-radius: 0.3em;
+}
+
+.night .chart-container .preview-container .preview {
+  height: 100%;
+  width: 100%;
+  margin-top: -1px;
+}
+
+.night .chart-container .preview-container .nav {
+  position: absolute;
+  top: 0;
+  height: inherit;
+  border: 1px solid #56626D;
+  border-radius: 0.3em;
+  min-width: 1.2em;
+  max-width: 100%;
+}
+
+.night .chart-container .preview-container .nav::after,
+.night .chart-container .preview-container .nav::before {
+  content: '';
+  position: absolute;
+  background-color: #304259;
+  opacity: 0.6;
+  width: 100vw;
+  height: 100%;
+  border: 2px solid #304259;
+  margin-top: -1px;
+  z-index: 1;
+}
+
+.night .chart-container .preview-container .nav::before {
+  left: -100vw;
+  margin-left: 0px;
+}
+
+.night .chart-container .preview-container .nav::after {
+  left: 100%;
+}
+
+.night .chart-container .preview-container .nav .nav-right,
+.night .chart-container .preview-container .nav .nav-left {
+  position: relative;
+  display: inline-block;
+  background-color: #56626D;
+  border-left: 1px solid #FFF;
+  border-right: 1px solid #FFF;
+  width: 0.6em;
+  height: 100%;
+  z-index: 100;
+}
+
+.night .chart-container .preview-container .nav .nav-right {
+  border-radius: 0 0.2em 0.2em 0;
+  margin-right: -1px;
+  position: absolute;
+  right: 0;
+}
+
+.night .chart-container .preview-container .nav .nav-left {
+  border-radius: 0.2em 0 0 0.2em;
+  margin-left: -1px;
+}
+
+.night .chart-container .preview-container .nav .nav-right::before,
+.night .chart-container .preview-container .nav .nav-left::after {
+  content: '';
+  border-left: 2px solid #FFF;
+  height: 0.6em;
+  display: block;
+  position: absolute;
+  top: 50%;
+  margin-top: -0.3em;
+  margin-left: 0.2em;
+}
+
+.night .chart-container .preview-container .nav .nav-right::after,
+.night .chart-container .preview-container .nav .nav-left::before {
+  content: '';
+  position: absolute;
+  width: 100vw;
+  height: 100%;
+}
+
+.night .chart-container .preview-container .nav .nav-left::before {
+  left: -100vw;
+  margin-left: 0px;
+}
+
+.night .chart-container .preview-container .nav .nav-right::after {
+  left: 100%;
+}
+
+.night .chart-container.zoomed .title {
+  display: none;
+}
+
+.night .chart-container.zoomed .zoom-out {
+  display: inline-block;
+}
+
+.night .chart-container.zoomed .plaque .caption::after {
+  display: none;
+}
+
+.night .chart-container .legend {
+  display: flex;
+  display: -webkit-flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  width: 100%;
+  margin-left: -10px;
+}
+
+.night .chart-container .legend div::before {
+  background-color: #242F3E;
+}
+
+@keyframes check-in {
+  from {
+    top: 2px;
+    left: 2px;
+    rigth: 2px;
+    bottom: 2px;
+  }
+
+  to {
+    top: 50%;
+    left: 50%;
+    right: 50%;
+    bottom: 50%;
+  }
+}
+
+@keyframes check-out {
+  from {
+    top: 50%;
+    left: 50%;
+    right: 50%;
+    bottom: 50%;
+  }
+
+  to {
+    top: 2px;
+    left: 2px;
+    rigth: 2px;
+    bottom: 2px;
+  }
+}
+/*# sourceMappingURL=maps/bundle.min.css.map */
